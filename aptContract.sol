@@ -1,3 +1,17 @@
+/* Assignment04 - Smart Contract
+ * 
+ * Members:
+ * - Emily F: emily.fang11@myhunter.cuny.edu
+ * - Kun Y: kun.yu25@myhunter.cuny.edu
+ * - Sunjin Y: sunjin.yoon07@myhunter.cuny.edu
+ * - Wonseok Y: WonSeok.Yang22@myhunter.cuny.edu
+ * - Kevin: kevin.fncw@gmail.com
+ * - Jason C: jason.chen53@myhunter.cuny.edu
+ * 
+ * Repository link:
+ * - https://github.com/ef1301/smart_contract 
+ */
+
 pragma solidity >=0.4.22 < 0.7.0;
 
 contract aptContract {
@@ -55,7 +69,7 @@ contract aptContract {
     }
 
     //charge all tenants rent amount  
-    function payRent() public onlyOwner{
+    function payRent() public onlyOwner {
     }
 
     //charge security deposit and add new tenant to tenant list
