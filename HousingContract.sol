@@ -2,44 +2,44 @@
 
 pragma solidity >=0.7.0 <0.8.0;
 
-contract aptContract {
+contract HousingContract {
     struct Tenant {
         string name;
         address payable tenant;
-        uint256 lease_length; //in months
+        uint256 leaseLength; //in months
     }
 
     address payable public owner;
 
     Tenant[] tenants; //list of tenants to auto charge rent amount
     uint256 tenantCount;
-    uint256 sDepositFee;
-    uint256 rent_cost; //per month
+    uint256 securityDepositFee;
+    uint256 rentCost; //per month
 
     constructor(
         uint256 _tenantCount,
-        uint256 _sDepositFee,
-        uint256 _rent_cost
-    ) public {
+        uint256 _securityDepositFee,
+        uint256 _rentCost
+    ) {
         tenantCount = _tenantCount;
-        sDepositFee = _sDepositFee;
-        rent_cost = _rent_cost;
+        securityDepositFee = _securityDepositFee;
+        rentCost = _rentCost;
     }
 
     //EVENTS
-    event rentPayment(
+    event RentPayment(
         address indexed _from,
         bytes32 indexed _id,
         uint256 _value
     );
 
-    event securityDeposit(
+    event SecurityDepositPayment(
         address indexed _from,
         bytes32 indexed _id,
         uint256 _value
     );
 
-    event depositRefund(
+    event SecurityDepositRefund(
         address indexed _to,
         bytes32 indexed _id,
         uint256 _value
@@ -60,8 +60,8 @@ contract aptContract {
     }*/
 
     //change rent_cost
-    function changeRent(uint256 new_rent_cost) public onlyOwner {
-        rent_cost = new_rent_cost;
+    function changeRent(uint256 newRentCost) public onlyOwner {
+        rentCost = newRentCost;
     }
 
     //charge all tenants rent amount
