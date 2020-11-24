@@ -129,6 +129,8 @@ contract HousingContract is Mortal {
             if (tenants[i].id == tenantId){
                 /** Refund security deposit */
                 tenants[i].account.send(securityDepositFee);
+                emit SecurityDepositRefund(tenants[i].account, tenantId, securityDepositFee);
+
 
                 /** Remove them from array, using swap and delete since no pop function exists */
                 Tenant t = tenants[i];
