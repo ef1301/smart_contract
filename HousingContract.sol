@@ -46,7 +46,7 @@ contract HousingContract is Mortal {
         uint256 leaseLength; // tenant's lease term in months
     }
 
-    Tenant[] tenants; // list of currently occupied tenants
+    Tenant[] tenants; // list of currently occupied tenants, is dynamic array
     uint256 currTenantCount; // current number of tenants
     uint256 maxTenantCount; // maximum number of tenants allowed
     uint256 securityDepositFee; // initial one-time refundable security deposit fee
@@ -107,12 +107,43 @@ contract HousingContract is Mortal {
     /** 
     * @dev Adds tenant to list of tenants and charges security deposit fee
     * @param newTenant payment address of new tenant 
+    * @param leaseL tenant's lease term in months
     */
-    function addTenant(address newTenant) public onlyOwner {}
+    function addTenant(address newTenant, uint256 leaseL) public onlyOwner {
+        /** Check if can house anymore tenants, revert() state of EVM otherwise */
+        require(tenants.length < maxTenantCount);
+
+        /** Generates new Tenant to be added to array of tenants*/
+        uint256 newID = generateNewID(); 
+        Tenant t = Tenant(newID, newTenant, leaseL);
+        tenants.push(t);
+    }
 
     /** 
     * @dev Removes tenant from list of tenants and refunds security deposit fee
     * @param tenantId id of tenant to be removed
     */
-    function removeTenant(uint256 tenantId) public onlyOwner {}
+    function removeTenant(uint256 tenantId) public onlyOwner {
+        /** Find correct tenant by ID */
+        for (uint i = 0; i < tenants.length; i++){
+            if (tenants[i].id == tenantId){
+                /** Refund security deposit */
+                tenants[i].account.send(securityDepositFee);
+
+                /** Remove them from array, using swap and delete since no pop function exists */
+                Tenant t = tenants[i];
+                tenants[i] = tenants[tenants.length-1];
+                tenants[tenants.length-1] = t;
+                delete tenants[tenants.length-1];
+                tenants.length--;
+                
+                break;
+            }
+        }
+    }
+
+    /** 
+    * @dev Generates new unique ID for new tenant, to be called by addTenant function
+    */
+    function generateNewID() public onlyOwner{}
 }
