@@ -55,7 +55,7 @@ contract aptContract {
     }
 
     //charge all tenants rent amount  
-    function payRent() public {
+    function payRent() public onlyOwner{
     }
 
     //charge security deposit and add new tenant to tenant list
