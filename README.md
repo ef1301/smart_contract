@@ -13,4 +13,4 @@
 
 With renting a apartments, it is important to ensure that both the renter and rentee keep their ends of the relationship. It is especially important to receive payments in a quick and timely manner when it is due, which is automatically done in this contract by having owners receive payments (monthly rent, security deposits, etc.) from their tenants. This contract has some helpful features for the owner and tenants relationship. For example, The tenants can request to leave, change tenantship, and pay rental fee. Owner can add a tenant, remove a tenant, and requests to pay rental fee. With so many important payments and payment deadlines to be aware of, a smart contract will ensure the security and efficiency in renting apartments/condos.
 
-## [Styling of Interface](https://solidity.readthedocs.io/en/v0.5.13/style-guide.html)
+### [Styling of Interface](https://solidity.readthedocs.io/en/v0.5.13/style-guide.html)
