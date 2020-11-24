@@ -9,6 +9,6 @@ Group members:
 - Jason C: jason.chen53@myhunter.cuny.edu
 
 Purpose of Contract:
-With buying a home, buyers have certain requirements that they must meet to prove their eligibility and ability to purchase a home. Some of these qualities may include being employed for at least 2 years, having a solid income, minimal debt, credit scores, and putting down a favorable down payment. With so many qualities to be aware of, a smart contract will ensure that potential or interested buyers meet seller expectations/requirements.
+With renting a house, automatically owner get the payment from tenant. This contract has some helpful features for an owner and taenants.  For example, The tenants can request to leave, change tenantship, and pay rental fee. Owner can add atenant, remove a tenant, and requests to pay rental fee.
 
 Styling of Interface: [Link](https://solidity.readthedocs.io/en/v0.5.13/style-guide.html)
