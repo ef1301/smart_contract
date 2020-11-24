@@ -2,14 +2,44 @@
 
 pragma solidity >=0.7.0 <0.8.0;
 
-contract HousingContract {
+/** 
+ * @title Owned
+ * @dev Base contract to represent ownership of a contract
+ * Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
+ */
+contract Owned {
+	address payable public owner;
+
+	// Contract constructor: set owner
+	constructor() {
+		owner = msg.sender;
+	}
+	// Access control modifier
+	modifier onlyOwner {
+		require(msg.sender == owner,
+		        "Only the contract owner can call this function");
+		_;
+	}
+}
+
+/** 
+ * @title Mortal
+ * @dev Base contract to allow for construct to be destructed
+ * Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
+ */
+contract Mortal is Owned {
+	// Contract destructor
+	function destroy() public onlyOwner {
+		selfdestruct(owner);
+	}
+}
+
+contract HousingContract is Mortal {
     struct Tenant {
         string name;
         address payable tenant;
         uint256 leaseLength; //in months
     }
-
-    address payable public owner;
 
     Tenant[] tenants; //list of tenants to auto charge rent amount
     uint256 tenantCount;
@@ -44,20 +74,6 @@ contract HousingContract {
         bytes32 indexed _id,
         uint256 _value
     );
-
-    //MODIFIERS
-    //owner validation so only owner can set/change tenants list
-    modifier onlyOwner() {
-        require(msg.sender == owner);
-        _;
-    }
-
-    /*modifier onlyTenant(){
-        require(
-            msg.sender == Tenant.tenant
-            ); 
-            _;
-    }*/
 
     //change rent_cost
     function changeRent(uint256 newRentCost) public onlyOwner {
