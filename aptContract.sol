@@ -1,44 +1,68 @@
-
 pragma solidity >=0.4.22 < 0.7.0;
 
 contract aptContract {
-Struct Tenant {
-       string name;
-       Address ether_wallet;
-       unint lease_length; //in months 
- }
-address owner; 
-Tenants[] tenant;  //list of tenants to auto charge rent amount
-uint tenantCount;
-uint sDepositFee;
-unint rent_cost; //per month
+    struct Tenant {
+        string name;
+        address payable tenant;
+        uint lease_length; //in months 
+    }
+    
+    address payable public owner;
+    
+    Tenant[] tenants;  //list of tenants to auto charge rent amount
+    uint tenantCount;
+    uint sDepositFee;
+    uint rent_cost; //per month
+    
 
-//EVENTS
-event rentPayment(address indexed _from, bytes32 indexed _id, uint _value);
+    constructor(
+        uint _tenantCount,
+        uint _sDepositFee,
+        uint _rent_cost
+    ) public {
+        tenantCount = _tenantCount;
+        sDepositFee = _sDepositFee;
+        rent_cost = _rent_cost;
+    }
 
-event securityDeposit(address indexed _from, bytes32 indexed _id, uint _value);
+    //EVENTS
+    event rentPayment(address indexed _from, bytes32 indexed _id, uint _value);
 
-event depositRefund(address indexed _from, bytes32 indexed _id, uint _value);
+    event securityDeposit(address indexed _from, bytes32 indexed _id, uint _value);
 
-//owner validation so only owner can set/change tenants list
-modifier onlyOwner(){
-require(msg.sender == owner, “Only owner can call this”);
-_;
- }
+    event depositRefund(address indexed _to, bytes32 indexed _id, uint _value);
 
-//owner validation so only owner can set/change tenants list
-modifier onlyOwner() {
-}
+    //MODIFIERS
+    //owner validation so only owner can set/change tenants list
+    modifier onlyOwner(){
+        require(
+            msg.sender == owner
+        ); 
+        _;
+    }
 
-//charge all tenants rent amount  
-function chargeRent() {
-}
+    /*modifier onlyTenant(){
+        require(
+            msg.sender == Tenant.tenant
+            ); 
+            _;
+    }*/
+    
 
-//charge security deposit and add new tenant to tenant list
-function newTenant() onlyOwner {
-}
+    //change rent_cost
+    function changeRent(uint new_rent_cost) public onlyOwner {
+        rent_cost = new_rent_cost;
+    }
 
-//return sDepositFee and remove tenant from list
-function removeTenant() onlyOwner {
-}
+    //charge all tenants rent amount  
+    function payRent() public {
+    }
+
+    //charge security deposit and add new tenant to tenant list
+    function newTenant() public onlyOwner {
+    }
+
+    //return sDepositFee and remove tenant from list
+    function removeTenant() public onlyOwner {
+    }
 }
