@@ -5,7 +5,7 @@ pragma solidity >=0.7.0 <0.8.0;
 /** 
  * @title Owned
  * @dev Base contract to represent ownership of a contract
- * Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
+ * @dev Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
  */
 contract Owned {
 	address payable public owner;
@@ -25,7 +25,7 @@ contract Owned {
 /** 
  * @title Mortal
  * @dev Base contract to allow for construct to be destructed
- * Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
+ * @dev Sourced from Mastering Ethereum at https://github.com/ethereumbook/ethereumbook
  */
 contract Mortal is Owned {
 	// Contract destructor
@@ -34,26 +34,42 @@ contract Mortal is Owned {
 	}
 }
 
+/** 
+ * @title HousingContract
+ * @dev Implements payment contract system between a landlord and tenents
+ */
 contract HousingContract is Mortal {
+
     struct Tenant {
-        string name;
-        address payable tenant;
-        uint256 leaseLength; //in months
+        uint256 id; // unique identifier for tenant
+        address payable account; // tenant's billing address 
+        uint256 leaseLength; // tenant's lease term in months
     }
 
-    Tenant[] tenants; //list of tenants to auto charge rent amount
-    uint256 tenantCount;
-    uint256 securityDepositFee;
-    uint256 rentCost; //per month
+    Tenant[] tenants; // list of currently occupied tenants
+    uint256 currTenantCount; // current number of tenants
+    uint256 maxTenantCount; // maximum number of tenants allowed
+    uint256 securityDepositFee; // initial one-time refundable security deposit fee
+    uint256 rentCost; // montly rent cost
+    uint256 counter; // counter used to assign tenant ids
 
+    /** 
+    * @dev Create a new housing contract to collect rent from tenants
+    * @param _maxTenantCount maximum number of tenants allowed
+    * @param _securityDepositFee refundable security deposit fee
+    * @param _rentCost montly rent cost
+    */
     constructor(
-        uint256 _tenantCount,
+        uint256 _maxTenantCount,
         uint256 _securityDepositFee,
         uint256 _rentCost
     ) {
-        tenantCount = _tenantCount;
-        securityDepositFee = _securityDepositFee;
-        rentCost = _rentCost;
+        maxTenantCount = _maxTenantCount;
+        _securityDepositFee = securityDepositFee;
+        _rentCost = rentCost;
+        
+        currTenantCount = 0;
+        counter = 1;
     }
 
     //EVENTS
@@ -75,17 +91,28 @@ contract HousingContract is Mortal {
         uint256 _value
     );
 
-    //change rent_cost
+    /** 
+    * @dev Changes monthly rent cost
+    * @param newRentCost new montly rent cost
+    */
     function changeRent(uint256 newRentCost) public onlyOwner {
         rentCost = newRentCost;
     }
 
-    //charge all tenants rent amount
-    function payRent() public onlyOwner {}
+    /** 
+    * @dev Charges montly rent to all currently occipied tenants
+    */
+    function chargeRent() public onlyOwner {}
 
-    //charge security deposit and add new tenant to tenant list
-    function newTenant() public onlyOwner {}
+    /** 
+    * @dev Adds tenant to list of tenants and charges security deposit fee
+    * @param newTenant payment address of new tenant 
+    */
+    function addTenant(address newTenant) public onlyOwner {}
 
-    //return sDepositFee and remove tenant from list
-    function removeTenant() public onlyOwner {}
+    /** 
+    * @dev Removes tenant from list of tenants and refunds security deposit fee
+    * @param tenantId id of tenant to be removed
+    */
+    function removeTenant(uint256 tenantId) public onlyOwner {}
 }
